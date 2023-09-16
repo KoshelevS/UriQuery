@@ -1,15 +1,20 @@
+using UriQueryHelper;
+
 namespace UriQueryHelperTests;
 
 public class UriQueryTests
 {
+    private static readonly UriQuery target = new();
+
     [SetUp]
     public void Setup()
     {
     }
 
-    [Test]
-    public void Test1()
+    [TestCase("")]
+    [TestCase("?")]
+    public void ParsesEmptyQuery(string query)
     {
-        Assert.Pass();
+        Assert.That(target.Parse(query), Is.Empty);
     }
 }

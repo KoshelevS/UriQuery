@@ -1,4 +1,6 @@
-﻿namespace UriQueryHelper;
+﻿using System.Text;
+
+namespace UriQueryHelper;
 
 public class UriQuery
 {
@@ -38,7 +40,21 @@ public class UriQuery
         else
         {
             var kvp = data.First();
-            return $"?{kvp.Key}={kvp.Value.FirstOrDefault()}";
+            if (kvp.Value.Count > 1)
+            {
+                var builder = new StringBuilder("?");
+
+                foreach (var value in kvp.Value)
+                {
+                    builder.Append(kvp.Key).Append("[]=").Append(value).Append('&');
+                }
+
+                return builder.ToString()[..^1];
+            }
+            else
+            {
+                return $"?{kvp.Key}={kvp.Value.FirstOrDefault()}";
+            }
         }
     }
 

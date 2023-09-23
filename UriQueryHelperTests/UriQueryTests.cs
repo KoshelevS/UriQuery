@@ -74,4 +74,11 @@ public class UriQueryTests
             exception.Message,
             Is.EqualTo($"'{invalidExpression}' is not a valid parameter expression (Parameter 'query')"));
     }
+
+    [Test]
+    public void CannotParseNull()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => target.Parse(null!));
+        Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'query')"));
+    }
 }

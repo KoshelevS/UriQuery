@@ -4,6 +4,11 @@ public class UriQuery
 {
     public Dictionary<string, List<string>> Parse(string query)
     {
+        if (query == null)
+        {
+            throw new ArgumentNullException(nameof(query));
+        }
+
         var result = new Dictionary<string, List<string>>();
 
         foreach (var parameter in GetParameters(query.TrimStart('?')))

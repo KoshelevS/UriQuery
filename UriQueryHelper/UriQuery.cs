@@ -29,6 +29,11 @@ public class UriQuery
         return result;
     }
 
+    public string Serialize(Dictionary<string, List<string>> data)
+    {
+        return "?";
+    }
+
     private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch
     {
         ["", var _] => null,

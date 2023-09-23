@@ -81,4 +81,11 @@ public class UriQueryTests
         var exception = Assert.Throws<ArgumentNullException>(() => target.Parse(null!));
         Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'query')"));
     }
+
+    [Test]
+    public void SerializesEmptyParameters()
+    {
+        var parameters = new Dictionary<string, List<string>>();
+        Assert.That(target.Serialize(parameters), Is.EqualTo("?"));
+    }
 }

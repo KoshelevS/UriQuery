@@ -19,4 +19,11 @@ public class UriQueryTests
         const string query = "?param=value";
         Assert.That(target.Parse(query), Does.ContainKey("param").WithValue(new[] { "value" }));
     }
+
+    [Test]
+    public void ParsesSingleValuelessParameter()
+    {
+        const string query = "?param=";
+        Assert.That(target.Parse(query), Does.ContainKey("param").WithValue(new[] { "" }));
+    }
 }

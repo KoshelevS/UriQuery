@@ -6,17 +6,10 @@ public class UriQuery
     {
         var result = new Dictionary<string, List<string>>();
 
-        foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
+        foreach (var parameter in GetParameters(query.TrimStart('?')))
         {
-            var items = parameter.Split('=');
-            if (items.Length != 2 || string.IsNullOrEmpty(items[0]))
-            {
-                throw new ArgumentException(
-                    $"'{parameter}' is not a valid parameter expression", nameof(query));
-            }
-
-            var key = items[0].TrimEnd(']').TrimEnd('[');
-            var value = items[1];
+            (var key, var value) = GetKeyValue(parameter) ?? throw new ArgumentException(
+                $"'{parameter}' is not a valid parameter expression", nameof(query));
 
             if (result.TryGetValue(key, out var values))
             {
@@ -29,5 +22,17 @@ public class UriQuery
         }
 
         return result;
+    }
+
+    private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch
+    {
+        ["", var _] => null,
+        [var key, var value] => (key.TrimEnd('[', ']'), value),
+        _ => null,
+    };
+
+    private string[] GetParameters(string query)
+    {
+        return query.Split("&", StringSplitOptions.RemoveEmptyEntries);
     }
 }

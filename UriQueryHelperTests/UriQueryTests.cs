@@ -83,6 +83,14 @@ public class UriQueryTests
     }
 
     [Test]
+    public void DecodesSpecialCharacters()
+    {
+        Assert.That(
+            target.Parse("?param%21=%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D"),
+            Does.ContainKey("param!").WithValue(new[] { " !\"#$%&'()*+,/:;=?@[]" }));
+    }
+
+    [Test]
     public void SerializesEmptyParameters()
     {
         var parameters = new Dictionary<string, List<string>>();

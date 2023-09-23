@@ -58,7 +58,9 @@ public class UriQuery
     private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch
     {
         ["", var _] => null,
-        [var key, var value] => (key.TrimEnd('[', ']'), value),
+        [var key, var value] => (
+            Uri.UnescapeDataString(key.TrimEnd('[', ']')),
+            Uri.UnescapeDataString(value)),
         _ => null,
     };
 

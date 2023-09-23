@@ -9,7 +9,7 @@ public class UriQuery
         foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
             var items = parameter.Split('=');
-            var key = items[0];
+            var key = items[0].TrimEnd(']').TrimEnd('[');
             var value = items[1];
 
             if (result.TryGetValue(key, out var values))

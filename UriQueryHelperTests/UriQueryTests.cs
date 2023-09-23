@@ -41,4 +41,13 @@ public class UriQueryTests
         Assert.That(actual, Does.ContainKey("param3").WithValue(new[] { "value3" }));
         Assert.That(actual, Has.Exactly(3).Items);
     }
+
+    [Test]
+    public void ParsesMultivaluedParameter_SimpleSyntax()
+    {
+        var actual = target.Parse("?param=value1&param=value2&param=value3");
+
+        Assert.That(actual, Does.ContainKey("param").WithValue(new[] { "value1", "value2", "value3" }));
+        Assert.That(actual, Has.One.Items);
+    }
 }

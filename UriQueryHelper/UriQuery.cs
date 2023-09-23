@@ -9,7 +9,14 @@ public class UriQuery
         foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
             var items = parameter.Split('=');
-            result.Add(items[0], new[] { items[1] });
+            if (result.TryGetValue(items[0], out var values))
+            {
+                result[items[0]] = values.Append(items[1]).ToArray();
+            }
+            else
+            {
+                result.Add(items[0], new[] { items[1] });
+            }
         }
 
         return result;

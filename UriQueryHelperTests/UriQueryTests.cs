@@ -13,10 +13,11 @@ public class UriQueryTests
         Assert.That(target.Parse(query), Is.Empty);
     }
 
-    [Test]
-    public void ParsesSingleParameterWithValue()
+    [TestCase("param=value")]
+    [TestCase("?param=value")]
+    public void ParsesSingleParameterWithValue(string query)
     {
-        var actual = target.Parse("?param=value");
+        var actual = target.Parse(query);
 
         Assert.That(actual, Does.ContainKey("param").WithValue(new[] { "value" }));
         Assert.That(actual, Has.One.Items);

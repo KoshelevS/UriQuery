@@ -4,22 +4,14 @@ public class UriQuery
 {
     public Dictionary<string, string[]> Parse(string query)
     {
-        var cleanQuery = query.TrimStart('?');
-        if (!string.IsNullOrWhiteSpace(cleanQuery))
-        {
-            var result = new Dictionary<string, string[]>();
+        var result = new Dictionary<string, string[]>();
 
-            foreach (var parameter in cleanQuery.Split('&'))
-            {
-                var items = parameter.Split('=');
-                result.Add(items[0], new[] { items[1] });
-            }
-
-            return result;
-        }
-        else
+        foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
-            return new Dictionary<string, string[]>();
+            var items = parameter.Split('=');
+            result.Add(items[0], new[] { items[1] });
         }
+
+        return result;
     }
 }

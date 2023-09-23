@@ -7,11 +7,15 @@ public class UriQuery
         var cleanQuery = query.TrimStart('?');
         if (!string.IsNullOrWhiteSpace(cleanQuery))
         {
-            var items = cleanQuery.Split('=');
-            return new Dictionary<string, string[]>
+            var result = new Dictionary<string, string[]>();
+
+            foreach (var parameter in cleanQuery.Split('&'))
             {
-                [items[0]] = new[] { items[1] },
-            };
+                var items = parameter.Split('=');
+                result.Add(items[0], new[] { items[1] });
+            }
+
+            return result;
         }
         else
         {

@@ -59,4 +59,18 @@ public class UriQueryTests
         Assert.That(actual, Does.ContainKey("param").WithValue(new[] { "value1", "value2", "value3" }));
         Assert.That(actual, Has.One.Items);
     }
+
+    [TestCase("?param", "param")]
+    [TestCase("?param1&param2=value2", "param1")]
+    [TestCase("?param1=value1&param2", "param2")]
+    [TestCase("?=value", "=value")]
+    [TestCase("?=value1&param2=value2", "=value1")]
+    [TestCase("?param1=value1&=value2", "=value2")]
+    public void ParsesReportsInvalidParameters(string query, string invalidExpression)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => target.Parse(query));
+        Assert.That(
+            exception.Message,
+            Is.EqualTo($"'{invalidExpression}' is not a valid parameter expression (Parameter 'query')"));
+    }
 }

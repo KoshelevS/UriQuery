@@ -9,6 +9,12 @@ public class UriQuery
         foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
             var items = parameter.Split('=');
+            if (items.Length != 2 || string.IsNullOrEmpty(items[0]))
+            {
+                throw new ArgumentException(
+                    $"'{parameter}' is not a valid parameter expression", nameof(query));
+            }
+
             var key = items[0].TrimEnd(']').TrimEnd('[');
             var value = items[1];
 

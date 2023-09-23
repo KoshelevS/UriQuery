@@ -143,4 +143,17 @@ public class UriQueryTests
         var exception = Assert.Throws<ArgumentNullException>(() => target.Parse(null!));
         Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'query')"));
     }
+
+    [Test]
+    public void EncodesSpecialCharacters()
+    {
+        var parameters = new Dictionary<string, List<string>>
+        {
+            ["param!"] = new() { " !\"#$%&'()*+,/:;=?@[]" },
+        };
+
+        Assert.That(
+            target.Serialize(parameters),
+            Is.EqualTo("?param%21=%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D"));
+    }
 }

@@ -42,12 +42,13 @@ public class UriQuery
 
         foreach (var kvp in data)
         {
-            var key = kvp.Value.Count > 1 ? $"{kvp.Key}[]" : kvp.Key;
+            var encodedKey = Uri.EscapeDataString(kvp.Key);
+            var key = kvp.Value.Count > 1 ? $"{encodedKey}[]" : encodedKey;
             var values = kvp.Value.Count == 0 ? new List<string>() { "" } : kvp.Value;
 
             foreach (var value in values)
             {
-                builder.Append($"{key}={value}&");
+                builder.Append($"{key}={Uri.EscapeDataString(value)}&");
             }
         }
 

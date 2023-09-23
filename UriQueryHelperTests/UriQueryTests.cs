@@ -136,4 +136,11 @@ public class UriQueryTests
             target.Serialize(parameters),
             Is.EqualTo("?param1=value1&param2=value2&param3=value3"));
     }
+
+    [Test]
+    public void CannotSerializeNull()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => target.Parse(null!));
+        Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'query')"));
+    }
 }

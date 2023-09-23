@@ -33,6 +33,11 @@ public class UriQuery
 
     public string Serialize(Dictionary<string, List<string>> data)
     {
+        if (data == null)
+        {
+            throw new ArgumentNullException(nameof(data));
+        }
+
         var builder = new StringBuilder("?");
 
         foreach (var kvp in data)

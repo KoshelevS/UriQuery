@@ -164,4 +164,11 @@ public class UriQueryTests
             target.Serialize(parameters),
             Is.EqualTo("?param%21=%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D"));
     }
+
+    [Test]
+    public void QueryRoundtripTest()
+    {
+        var query = "?param1[]=value11&param1[]=value12&param%21=%20%21%22%23%24%25%26%27";
+        Assert.That(target.Serialize(target.Parse(query)), Is.EqualTo(query));
+    }
 }

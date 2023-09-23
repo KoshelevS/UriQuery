@@ -16,25 +16,29 @@ public class UriQueryTests
     [Test]
     public void ParsesSingleParameterWithValue()
     {
-        const string query = "?param=value";
-        Assert.That(target.Parse(query), Does.ContainKey("param").WithValue(new[] { "value" }));
+        var actual = target.Parse("?param=value");
+
+        Assert.That(actual, Does.ContainKey("param").WithValue(new[] { "value" }));
+        Assert.That(actual, Has.One.Items);
     }
 
     [Test]
     public void ParsesSingleValuelessParameter()
     {
-        const string query = "?param=";
-        Assert.That(target.Parse(query), Does.ContainKey("param").WithValue(new[] { "" }));
+        var actual = target.Parse("?param=");
+
+        Assert.That(actual, Does.ContainKey("param").WithValue(new[] { "" }));
+        Assert.That(actual, Has.One.Items);
     }
 
     [Test]
     public void ParsesMultipleParametersWithValues()
     {
-        const string query = "?param1=value1&param2=value2&param3=value3";
-        var actual = target.Parse(query);
+        var actual = target.Parse("?param1=value1&param2=value2&param3=value3");
 
         Assert.That(actual, Does.ContainKey("param1").WithValue(new[] { "value1" }));
         Assert.That(actual, Does.ContainKey("param2").WithValue(new[] { "value2" }));
         Assert.That(actual, Does.ContainKey("param3").WithValue(new[] { "value3" }));
+        Assert.That(actual, Has.Exactly(3).Items);
     }
 }

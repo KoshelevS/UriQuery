@@ -2,20 +2,23 @@
 
 public class UriQuery
 {
-    public Dictionary<string, string[]> Parse(string query)
+    public Dictionary<string, List<string>> Parse(string query)
     {
-        var result = new Dictionary<string, string[]>();
+        var result = new Dictionary<string, List<string>>();
 
         foreach (var parameter in query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
             var items = parameter.Split('=');
-            if (result.TryGetValue(items[0], out var values))
+            var key = items[0];
+            var value = items[1];
+
+            if (result.TryGetValue(key, out var values))
             {
-                result[items[0]] = values.Append(items[1]).ToArray();
+                values.Add(value);
             }
             else
             {
-                result.Add(items[0], new[] { items[1] });
+                result.Add(key, new List<string> { value });
             }
         }
 

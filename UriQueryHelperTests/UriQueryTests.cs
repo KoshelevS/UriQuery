@@ -121,4 +121,19 @@ public class UriQueryTests
             target.Serialize(parameters),
             Is.EqualTo("?param[]=value1&param[]=value2&param[]=value3"));
     }
+
+    [Test]
+    public void SerializesMultipleParameters()
+    {
+        var parameters = new Dictionary<string, List<string>>
+        {
+            ["param1"] = new() { "value1" },
+            ["param2"] = new() { "value2" },
+            ["param3"] = new() { "value3" },
+        };
+
+        Assert.That(
+            target.Serialize(parameters),
+            Is.EqualTo("?param1=value1&param2=value2&param3=value3"));
+    }
 }

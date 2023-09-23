@@ -35,25 +35,18 @@ public class UriQuery
     {
         var builder = new StringBuilder("?");
 
-        if (data.Count > 0)
+        foreach (var kvp in data)
         {
-            var kvp = data.First();
-
             var key = kvp.Value.Count > 1 ? $"{kvp.Key}[]" : kvp.Key;
             var values = kvp.Value.Count == 0 ? new List<string>() { "" } : kvp.Value;
 
-            for (var i = 0; i < values.Count; i++)
+            foreach (var value in values)
             {
-                builder.Append($"{key}={values[i]}");
-
-                if (i < values.Count - 1)
-                {
-                    builder.Append('&');
-                }
+                builder.Append($"{key}={value}&");
             }
         }
 
-        return builder.ToString();
+        return builder.ToString().TrimEnd('&');
     }
 
     private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch

@@ -38,7 +38,7 @@ public class UriQuery
         else
         {
             var kvp = data.First();
-            return $"?{kvp.Key}={kvp.Value[0]}";
+            return $"?{kvp.Key}={kvp.Value.FirstOrDefault()}";
         }
     }
 

@@ -98,4 +98,14 @@ public class UriQueryTests
         };
         Assert.That(target.Serialize(parameters), Is.EqualTo("?param=value"));
     }
+
+    [Test]
+    public void SerializesOneValuelessParameter()
+    {
+        var parameters = new Dictionary<string, List<string>>
+        {
+            ["param"] = new()
+        };
+        Assert.That(target.Serialize(parameters), Is.EqualTo("?param="));
+    }
 }

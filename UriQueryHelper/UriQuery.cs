@@ -31,7 +31,15 @@ public class UriQuery
 
     public string Serialize(Dictionary<string, List<string>> data)
     {
-        return "?";
+        if (data.Count == 0)
+        {
+            return "?";
+        }
+        else
+        {
+            var kvp = data.First();
+            return $"?{kvp.Key}={kvp.Value[0]}";
+        }
     }
 
     private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch

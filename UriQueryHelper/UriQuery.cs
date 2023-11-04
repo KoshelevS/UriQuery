@@ -4,15 +4,8 @@ namespace UriQueryHelper;
 
 public class UriQuery
 {
-    public HashSet<Parameter> Parameters { get; }
+    private readonly HashSet<Parameter> parameters = new();
 
-    public UriQuery(HashSet<Parameter> parameters)
-    {
-        Parameters = parameters;
-    }
-
-    // TODO: Create a class to store parameter(s)
-    // TODO: this class allows to keep multiple values + do encoding/decoding, building kvp string
     public static UriQuery Parse(string query)
     {
         if (query == null)
@@ -20,21 +13,16 @@ public class UriQuery
             throw new ArgumentNullException(nameof(query));
         }
 
-        var result = new HashSet<Parameter>();
+        var result = new UriQuery();
 
         foreach (var token in SplitParameters(query.TrimStart('?')))
         {
-            var parameter = TryParseParameter(token);
-            if (parameter == null)
-            {
-                throw new ArgumentException(
-                    $"'{token}' is not a valid parameter expression", nameof(query));
-            }
-
-            result.Add(parameter);
+            var (name, value) = TryParseParameter(token) ?? throw new ArgumentException(
+                $"'{token}' is not a valid parameter expression", nameof(query));
+            result.AddParameter(name, value);
         }
 
-        return new UriQuery(result);
+        return result;
     }
 
     public void AddParameter(string name, string value)
@@ -44,7 +32,7 @@ public class UriQuery
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
-        Parameters.Add(new Parameter(name, value ?? string.Empty));
+        parameters.Add(new Parameter(name, value ?? string.Empty));
     }
 
     public void RemoveParameter(string name)
@@ -54,7 +42,7 @@ public class UriQuery
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
-        Parameters.RemoveWhere(x => x.Name == name);
+        parameters.RemoveWhere(x => x.Name == name);
     }
 
     public void RemoveParameter(string name, string value)
@@ -64,26 +52,31 @@ public class UriQuery
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
-        Parameters.Remove(new Parameter(name, value ?? string.Empty));
+        parameters.Remove(new Parameter(name, value ?? string.Empty));
+    }
+
+    public IEnumerable<(string Name, string Value)> GetParameters()
+    {
+        return parameters.Select(pair => (pair.Name, pair.Value));
     }
 
     public string Serialize()
     {
         var builder = new StringBuilder("?");
 
-        foreach (var pair in Parameters)
+        foreach (var pair in parameters)
         {
-            builder.Append(pair.Serialize(Parameters.Count(x => x.Name == pair.Name) > 1))
+            builder.Append(pair.Serialize(parameters.Count(x => x.Name == pair.Name) > 1))
                    .Append('&');
         }
 
         return builder.ToString().TrimEnd('&');
     }
 
-    private static Parameter? TryParseParameter(string parameter) => parameter.Split('=') switch
+    private static (string Name, string Value)? TryParseParameter(string token) => token.Split('=') switch
     {
     ["", var _] => null,
-    [var key, var value] => new Parameter(
+    [var key, var value] => new(
         Uri.UnescapeDataString(key.TrimEnd('[', ']')),
         Uri.UnescapeDataString(value)),
         _ => null,
@@ -94,7 +87,7 @@ public class UriQuery
         return query.Split("&", StringSplitOptions.RemoveEmptyEntries);
     }
 
-    public record Parameter(string Name, string Value)
+    private record Parameter(string Name, string Value)
     {
         public string Serialize(bool isMultivalue) => isMultivalue
             ? $"{Uri.EscapeDataString(Name)}[]={Uri.EscapeDataString(Value)}"

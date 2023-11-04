@@ -7,73 +7,55 @@ public class SerializeTests
     [Test]
     public void SerializesEmptyParameters()
     {
-        var parameters = new HashSet<UriQuery.Parameter>();
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
         Assert.That(target.Serialize(), Is.EqualTo("?"));
     }
 
     [Test]
     public void SerializesOneParameterValue()
     {
-        var parameters = new HashSet<UriQuery.Parameter>
-        {
-            new("param", "value")
-        };
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
+        target.AddParameter("param", "value");
+
         Assert.That(target.Serialize(), Is.EqualTo("?param=value"));
     }
 
     [Test]
     public void SerializesOneValuelessParameter()
     {
-        var parameters = new HashSet<UriQuery.Parameter>
-        {
-            new("param", "")
-        };
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
+        target.AddParameter("param", "");
+
         Assert.That(target.Serialize(), Is.EqualTo("?param="));
     }
 
     [Test]
     public void SerializesOneMultivalueParameter()
     {
-        var parameters = new HashSet<UriQuery.Parameter>
-        {
-            new("param", "value1"),
-            new("param", "value2"),
-            new("param", "value3"),
-        };
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
+        target.AddParameter("param", "value1");
+        target.AddParameter("param", "value2");
+        target.AddParameter("param", "value3");
 
-        Assert.That(
-            target.Serialize(),
-            Is.EqualTo("?param[]=value1&param[]=value2&param[]=value3"));
+        Assert.That(target.Serialize(), Is.EqualTo("?param[]=value1&param[]=value2&param[]=value3"));
     }
 
     [Test]
     public void SerializesMultipleParameters()
     {
-        var parameters = new HashSet<UriQuery.Parameter>
-        {
-            new("param1", "value1"),
-            new("param2", "value2"),
-            new("param3", "value3"),
-        };
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
+        target.AddParameter("param1", "value1");
+        target.AddParameter("param2", "value2");
+        target.AddParameter("param3", "value3");
 
-        Assert.That(
-            target.Serialize(),
-            Is.EqualTo("?param1=value1&param2=value2&param3=value3"));
+        Assert.That(target.Serialize(), Is.EqualTo("?param1=value1&param2=value2&param3=value3"));
     }
 
     [Test]
     public void EncodesSpecialCharacters()
     {
-        var parameters = new HashSet<UriQuery.Parameter>
-        {
-            new("param!", " !\"#$%&'()*+,/:;=?@[]"),
-        };
-        var target = new UriQuery(parameters);
+        var target = new UriQuery();
+        target.AddParameter("param!", " !\"#$%&'()*+,/:;=?@[]");
 
         Assert.That(
             target.Serialize(),

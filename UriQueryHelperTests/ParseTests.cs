@@ -11,7 +11,7 @@ public class ParseTests
         var actual = UriQuery.Parse(query);
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Is.Empty);
+        Assert.That(actual.GetParameters(), Is.Empty);
     }
 
     [TestCase("param=value")]
@@ -21,8 +21,8 @@ public class ParseTests
         var actual = UriQuery.Parse(query);
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value")));
-        Assert.That(actual.Parameters, Has.One.Items);
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value")));
+        Assert.That(actual.GetParameters(), Has.One.Items);
     }
 
     [Test]
@@ -31,8 +31,8 @@ public class ParseTests
         var actual = UriQuery.Parse("?param=");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "")));
-        Assert.That(actual.Parameters, Has.One.Items);
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "")));
+        Assert.That(actual.GetParameters(), Has.One.Items);
     }
 
     [Test]
@@ -41,10 +41,10 @@ public class ParseTests
         var actual = UriQuery.Parse("?param1=value1&param2=value2&param3=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param1", "value1")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param2", "value2")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param3", "value3")));
-        Assert.That(actual.Parameters, Has.Exactly(3).Items);
+        Assert.That(actual.GetParameters(), Does.Contain(("param1", "value1")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param2", "value2")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param3", "value3")));
+        Assert.That(actual.GetParameters(), Has.Exactly(3).Items);
     }
 
     [Test]
@@ -53,10 +53,10 @@ public class ParseTests
         var actual = UriQuery.Parse("?param=value1&param=value2&param=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value1")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value2")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value3")));
-        Assert.That(actual.Parameters, Has.Exactly(3).Items);
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value1")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value2")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value3")));
+        Assert.That(actual.GetParameters(), Has.Exactly(3).Items);
     }
 
     [Test]
@@ -65,10 +65,10 @@ public class ParseTests
         var actual = UriQuery.Parse("?param[]=value1&param[]=value2&param[]=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value1")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value2")));
-        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value3")));
-        Assert.That(actual.Parameters, Has.Exactly(3).Items);
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value1")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value2")));
+        Assert.That(actual.GetParameters(), Does.Contain(("param", "value3")));
+        Assert.That(actual.GetParameters(), Has.Exactly(3).Items);
     }
 
     [TestCase("?param", "param")]
@@ -101,6 +101,6 @@ public class ParseTests
 
         Assert.That(actual, Is.Not.Null);
         Assert.That(
-            actual.Parameters, Does.Contain(new UriQuery.Parameter("param!", " !\"#$%&'()*+,/:;=?@[]")));
+            actual.GetParameters(), Does.Contain(("param!", " !\"#$%&'()*+,/:;=?@[]")));
     }
 }

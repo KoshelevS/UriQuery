@@ -7,7 +7,7 @@ public class SerializeTests
     [Test]
     public void SerializesEmptyParameters()
     {
-        var parameters = new Dictionary<string, List<string>>();
+        var parameters = new HashSet<UriQuery.Parameter>();
         var target = new UriQuery(parameters);
         Assert.That(target.Serialize(), Is.EqualTo("?"));
     }
@@ -15,9 +15,9 @@ public class SerializeTests
     [Test]
     public void SerializesOneParameterValue()
     {
-        var parameters = new Dictionary<string, List<string>>
+        var parameters = new HashSet<UriQuery.Parameter>
         {
-            ["param"] = new() { "value" }
+            new("param", "value")
         };
         var target = new UriQuery(parameters);
         Assert.That(target.Serialize(), Is.EqualTo("?param=value"));
@@ -26,9 +26,9 @@ public class SerializeTests
     [Test]
     public void SerializesOneValuelessParameter()
     {
-        var parameters = new Dictionary<string, List<string>>
+        var parameters = new HashSet<UriQuery.Parameter>
         {
-            ["param"] = new()
+            new("param", "")
         };
         var target = new UriQuery(parameters);
         Assert.That(target.Serialize(), Is.EqualTo("?param="));
@@ -37,9 +37,11 @@ public class SerializeTests
     [Test]
     public void SerializesOneMultivalueParameter()
     {
-        var parameters = new Dictionary<string, List<string>>
+        var parameters = new HashSet<UriQuery.Parameter>
         {
-            ["param"] = new() { "value1", "value2", "value3" }
+            new("param", "value1"),
+            new("param", "value2"),
+            new("param", "value3"),
         };
         var target = new UriQuery(parameters);
 
@@ -51,11 +53,11 @@ public class SerializeTests
     [Test]
     public void SerializesMultipleParameters()
     {
-        var parameters = new Dictionary<string, List<string>>
+        var parameters = new HashSet<UriQuery.Parameter>
         {
-            ["param1"] = new() { "value1" },
-            ["param2"] = new() { "value2" },
-            ["param3"] = new() { "value3" },
+            new("param1", "value1"),
+            new("param2", "value2"),
+            new("param3", "value3"),
         };
         var target = new UriQuery(parameters);
 
@@ -67,9 +69,9 @@ public class SerializeTests
     [Test]
     public void EncodesSpecialCharacters()
     {
-        var parameters = new Dictionary<string, List<string>>
+        var parameters = new HashSet<UriQuery.Parameter>
         {
-            ["param!"] = new() { " !\"#$%&'()*+,/:;=?@[]" },
+            new("param!", " !\"#$%&'()*+,/:;=?@[]"),
         };
         var target = new UriQuery(parameters);
 

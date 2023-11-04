@@ -21,7 +21,7 @@ public class ParseTests
         var actual = UriQuery.Parse(query);
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.ContainKey("param").WithValue(new[] { "value" }));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value")));
         Assert.That(actual.Parameters, Has.One.Items);
     }
 
@@ -31,7 +31,7 @@ public class ParseTests
         var actual = UriQuery.Parse("?param=");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.ContainKey("param").WithValue(new[] { "" }));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "")));
         Assert.That(actual.Parameters, Has.One.Items);
     }
 
@@ -41,9 +41,9 @@ public class ParseTests
         var actual = UriQuery.Parse("?param1=value1&param2=value2&param3=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual.Parameters, Does.ContainKey("param1").WithValue(new[] { "value1" }));
-        Assert.That(actual.Parameters, Does.ContainKey("param2").WithValue(new[] { "value2" }));
-        Assert.That(actual.Parameters, Does.ContainKey("param3").WithValue(new[] { "value3" }));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param1", "value1")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param2", "value2")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param3", "value3")));
         Assert.That(actual.Parameters, Has.Exactly(3).Items);
     }
 
@@ -53,10 +53,10 @@ public class ParseTests
         var actual = UriQuery.Parse("?param=value1&param=value2&param=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(
-            actual.Parameters,
-            Does.ContainKey("param").WithValue(new[] { "value1", "value2", "value3" }));
-        Assert.That(actual.Parameters, Has.One.Items);
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value1")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value2")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value3")));
+        Assert.That(actual.Parameters, Has.Exactly(3).Items);
     }
 
     [Test]
@@ -65,10 +65,10 @@ public class ParseTests
         var actual = UriQuery.Parse("?param[]=value1&param[]=value2&param[]=value3");
 
         Assert.That(actual, Is.Not.Null);
-        Assert.That(
-            actual.Parameters,
-            Does.ContainKey("param").WithValue(new[] { "value1", "value2", "value3" }));
-        Assert.That(actual.Parameters, Has.One.Items);
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value1")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value2")));
+        Assert.That(actual.Parameters, Does.Contain(new UriQuery.Parameter("param", "value3")));
+        Assert.That(actual.Parameters, Has.Exactly(3).Items);
     }
 
     [TestCase("?param", "param")]
@@ -101,7 +101,6 @@ public class ParseTests
 
         Assert.That(actual, Is.Not.Null);
         Assert.That(
-            actual.Parameters,
-            Does.ContainKey("param!").WithValue(new[] { " !\"#$%&'()*+,/:;=?@[]" }));
+            actual.Parameters, Does.Contain(new UriQuery.Parameter("param!", " !\"#$%&'()*+,/:;=?@[]")));
     }
 }

@@ -21,15 +21,6 @@ public class UriQueryTests
     }
 
     [Test]
-    public void RemoveParameter()
-    {
-        var data = UriQuery.Parse("?param1=value1&param2=value2");
-        data.RemoveParameter("param1");
-
-        Assert.That(data.Serialize(), Is.EqualTo("?param2=value2"));
-    }
-
-    [Test]
     public void AddValueToParameter()
     {
         var data = UriQuery.Parse("?param=value1");
@@ -39,7 +30,25 @@ public class UriQueryTests
     }
 
     [Test]
-    public void RemoveValueFromParameter()
+    public void RemoveSingleValuedParameter()
+    {
+        var data = UriQuery.Parse("?param1=value1&param2=value2");
+        data.RemoveParameter("param1");
+
+        Assert.That(data.Serialize(), Is.EqualTo("?param2=value2"));
+    }
+
+    [Test]
+    public void RemoveMultiValuedParameter()
+    {
+        var data = UriQuery.Parse("?param1[]=value11&param1[]=value12&param1[]=value13&param2=value21");
+        data.RemoveParameter("param1");
+
+        Assert.That(data.Serialize(), Is.EqualTo("?param2=value21"));
+    }
+
+    [Test]
+    public void RemoveValueFromMultiValuedParameter()
     {
         var data = UriQuery.Parse("?param[]=value1&param[]=value2&param[]=value3");
         data.RemoveParameter("param", "value2");

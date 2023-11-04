@@ -4,7 +4,14 @@ namespace UriQueryHelper;
 
 public class UriQuery
 {
-    public Dictionary<string, List<string>> Parse(string query)
+    public Dictionary<string, List<string>> Parameters { get; }
+
+    public UriQuery(Dictionary<string, List<string>> parameters)
+    {
+        Parameters = parameters;
+    }
+
+    public static UriQuery Parse(string query)
     {
         if (query == null)
         {
@@ -28,19 +35,14 @@ public class UriQuery
             }
         }
 
-        return result;
+        return new UriQuery(result);
     }
 
-    public string Serialize(Dictionary<string, List<string>> data)
+    public string Serialize()
     {
-        if (data == null)
-        {
-            throw new ArgumentNullException(nameof(data));
-        }
-
         var builder = new StringBuilder("?");
 
-        foreach (var kvp in data)
+        foreach (var kvp in Parameters)
         {
             var encodedKey = Uri.EscapeDataString(kvp.Key);
             var key = kvp.Value.Count > 1 ? $"{encodedKey}[]" : encodedKey;
@@ -55,16 +57,16 @@ public class UriQuery
         return builder.ToString().TrimEnd('&');
     }
 
-    private (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch
+    private static (string key, string value)? GetKeyValue(string parameter) => parameter.Split('=') switch
     {
-        ["", var _] => null,
-        [var key, var value] => (
-            Uri.UnescapeDataString(key.TrimEnd('[', ']')),
-            Uri.UnescapeDataString(value)),
+    ["", var _] => null,
+    [var key, var value] => (
+        Uri.UnescapeDataString(key.TrimEnd('[', ']')),
+        Uri.UnescapeDataString(value)),
         _ => null,
     };
 
-    private string[] GetParameters(string query)
+    private static string[] GetParameters(string query)
     {
         return query.Split("&", StringSplitOptions.RemoveEmptyEntries);
     }

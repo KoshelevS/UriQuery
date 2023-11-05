@@ -15,7 +15,7 @@ public class SerializeTests
     public void OneParameterValue()
     {
         var target = new UriQuery();
-        target.AddParameter("param", "value");
+        target.Add("param", "value");
 
         Assert.That(target.GetQuery(), Is.EqualTo("?param=value"));
     }
@@ -24,7 +24,7 @@ public class SerializeTests
     public void OneValuelessParameter()
     {
         var target = new UriQuery();
-        target.AddParameter("param", "");
+        target.Add("param", "");
 
         Assert.That(target.GetQuery(), Is.EqualTo("?param="));
     }
@@ -33,9 +33,9 @@ public class SerializeTests
     public void OneMultivalueParameter()
     {
         var target = new UriQuery();
-        target.AddParameter("param", "value1");
-        target.AddParameter("param", "value2");
-        target.AddParameter("param", "value3");
+        target.Add("param", "value1");
+        target.Add("param", "value2");
+        target.Add("param", "value3");
 
         Assert.That(target.GetQuery(), Is.EqualTo("?param[]=value1&param[]=value2&param[]=value3"));
     }
@@ -44,9 +44,9 @@ public class SerializeTests
     public void MultipleParameters()
     {
         var target = new UriQuery();
-        target.AddParameter("param1", "value1");
-        target.AddParameter("param2", "value2");
-        target.AddParameter("param3", "value3");
+        target.Add("param1", "value1");
+        target.Add("param2", "value2");
+        target.Add("param3", "value3");
 
         Assert.That(target.GetQuery(), Is.EqualTo("?param1=value1&param2=value2&param3=value3"));
     }
@@ -55,7 +55,7 @@ public class SerializeTests
     public void EncodesSpecialCharacters()
     {
         var target = new UriQuery();
-        target.AddParameter("param!", " !\"#$%&'()*+,/:;=?@[]");
+        target.Add("param!", " !\"#$%&'()*+,/:;=?@[]");
 
         Assert.That(
             target.GetQuery(),

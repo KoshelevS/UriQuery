@@ -1,6 +1,6 @@
-using UriQueryHelper;
+using Utils.UriQueryHelper;
 
-namespace UriQueryHelperTests;
+namespace Utils.UriQueryHelperTests;
 
 public class UriQueryTests
 {

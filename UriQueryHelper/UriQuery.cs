@@ -1,6 +1,6 @@
-﻿using System.Text;
+using System.Text;
 
-namespace UriQueryHelper;
+namespace Utils.UriQueryHelper;
 
 public class UriQuery
 {

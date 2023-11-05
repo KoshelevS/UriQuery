@@ -60,7 +60,7 @@ public class UriQuery
         return parameters.Select(pair => (pair.Name, pair.Value));
     }
 
-    public string Serialize()
+    public string GetQuery()
     {
         var builder = new StringBuilder("?");
 

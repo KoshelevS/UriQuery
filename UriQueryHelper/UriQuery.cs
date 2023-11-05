@@ -25,7 +25,7 @@ public class UriQuery
         return result;
     }
 
-    public void Add(string name, string value)
+    public UriQuery Add(string name, string value)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -33,9 +33,11 @@ public class UriQuery
         }
 
         parameters.Add(new Parameter(name, value ?? string.Empty));
+
+        return this;
     }
 
-    public void RemoveAll(string name)
+    public UriQuery RemoveAll(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -43,9 +45,11 @@ public class UriQuery
         }
 
         parameters.RemoveWhere(x => x.Name == name);
+
+        return this;
     }
 
-    public void Remove(string name, string value)
+    public UriQuery Remove(string name, string value)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -53,6 +57,8 @@ public class UriQuery
         }
 
         parameters.Remove(new Parameter(name, value ?? string.Empty));
+
+        return this;
     }
 
     public IEnumerable<(string Name, string Value)> GetParameters()

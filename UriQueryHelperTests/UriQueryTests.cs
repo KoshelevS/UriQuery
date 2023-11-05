@@ -4,55 +4,101 @@ namespace UriQueryHelperTests;
 
 public class UriQueryTests
 {
+    private const string BaseUri = "https://host.com:443/path";
+
     [Test]
-    public void QueryRoundtrip()
+    public void AddQuery()
     {
-        var query = "?param1[]=value11&param1[]=value12&param%21=%20%21%22%23%24%25%26%27";
-        Assert.That(UriQuery.Parse(query).Serialize(), Is.EqualTo(query));
+        var target = new UriBuilder(BaseUri);
+
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.AddParameter("param", "value");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
     }
 
     [Test]
     public void AddParameter()
     {
-        var data = UriQuery.Parse("?param1=value1");
-        data.AddParameter("param2", "value2");
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
 
-        Assert.That(data.Serialize(), Is.EqualTo("?param1=value1&param2=value2"));
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.AddParameter("param2", "value2");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value1&param2=value2"));
     }
 
     [Test]
     public void AddValueToParameter()
     {
-        var data = UriQuery.Parse("?param=value1");
-        data.AddParameter("param", "value2");
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
 
-        Assert.That(data.Serialize(), Is.EqualTo("?param[]=value1&param[]=value2"));
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.AddParameter("param1", "value2");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1[]=value1&param1[]=value2"));
     }
 
     [Test]
     public void RemoveSingleValuedParameter()
     {
-        var data = UriQuery.Parse("?param1=value1&param2=value2");
-        data.RemoveParameter("param1");
+        var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");
 
-        Assert.That(data.Serialize(), Is.EqualTo("?param2=value2"));
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.RemoveParameter("param1");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value2"));
     }
 
     [Test]
     public void RemoveMultiValuedParameter()
     {
-        var data = UriQuery.Parse("?param1[]=value11&param1[]=value12&param1[]=value13&param2=value21");
-        data.RemoveParameter("param1");
+        var target = new UriBuilder($"{BaseUri}?param1[]=value11&param1[]=value12&param2=value21");
 
-        Assert.That(data.Serialize(), Is.EqualTo("?param2=value21"));
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.RemoveParameter("param1");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value21"));
     }
 
     [Test]
     public void RemoveValueFromMultiValuedParameter()
     {
-        var data = UriQuery.Parse("?param[]=value1&param[]=value2&param[]=value3");
-        data.RemoveParameter("param", "value2");
+        var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2&param[]=value3");
 
-        Assert.That(data.Serialize(), Is.EqualTo("?param[]=value1&param[]=value3"));
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.RemoveParameter("param", "value2");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param[]=value1&param[]=value3"));
+    }
+
+    [Test]
+    public void RemoveQuery()
+    {
+        var target = new UriBuilder($"{BaseUri}?param=value");
+
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.RemoveParameter("param", "value");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?"));
+    }
+
+    [Test]
+    public void RemoveMultiValuedQuery()
+    {
+        var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2");
+
+        var uriQuery = UriQuery.Parse(target.Query);
+        uriQuery.RemoveParameter("param");
+        target.Query = uriQuery.Serialize();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?"));
     }
 }

@@ -75,10 +75,9 @@ public class UriQuery
 
     private static (string Name, string Value)? TryParseParameter(string token) => token.Split('=') switch
     {
-    ["", var _] => null,
-    [var key, var value] => new(
-        Uri.UnescapeDataString(key.TrimEnd('[', ']')),
-        Uri.UnescapeDataString(value)),
+        { Length: 2 } pair when pair[0] != string.Empty => new(
+            Uri.UnescapeDataString(pair[0].TrimEnd('[', ']')),
+            Uri.UnescapeDataString(pair[1])),
         _ => null,
     };
 

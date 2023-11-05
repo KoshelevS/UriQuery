@@ -8,7 +8,7 @@ public class SerializeTests
     public void EmptyParameters()
     {
         var target = new UriQuery();
-        Assert.That(target.GetQuery(), Is.EqualTo("?"));
+        Assert.That(target.GetQuery(), Is.Null);
     }
 
     [Test]

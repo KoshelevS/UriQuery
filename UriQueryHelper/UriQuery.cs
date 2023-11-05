@@ -60,8 +60,13 @@ public class UriQuery
         return parameters.Select(pair => (pair.Name, pair.Value));
     }
 
-    public string GetQuery()
+    public string? GetQuery()
     {
+        if (parameters.Count == 0)
+        {
+            return null;
+        }
+
         var builder = new StringBuilder("?");
 
         foreach (var pair in parameters)

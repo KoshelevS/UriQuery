@@ -87,7 +87,7 @@ public class UriQueryTests
         uriQuery.RemoveParameter("param", "value");
         target.Query = uriQuery.GetQuery();
 
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?"));
+        Assert.That(target.ToString(), Is.EqualTo(BaseUri));
     }
 
     [Test]
@@ -99,6 +99,6 @@ public class UriQueryTests
         uriQuery.RemoveParameter("param");
         target.Query = uriQuery.GetQuery();
 
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?"));
+        Assert.That(target.ToString(), Is.EqualTo(BaseUri));
     }
 }

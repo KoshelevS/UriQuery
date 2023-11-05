@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>Utils.UriQueryHelper</PackageId>
+    <Version>1.0.0-alpha1</Version>
+    <PackageTags>uri;url;query;querystring;uribuilder;urlbuilder;parameter;queryparameter</PackageTags>
+    <Description>
+      Helper class that can be used to parse an URI query string, add/remove parameters
+      to the query and serialize the result back to the query string.
+    </Description>
+    <Authors>Sergey Koshelev</Authors>
+  </PropertyGroup>
+
 </Project>

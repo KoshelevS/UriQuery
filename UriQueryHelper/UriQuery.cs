@@ -92,14 +92,18 @@ public class UriQuery
         return this;
     }
 
-    public UriQuery Without(string name, string value)
+    public UriQuery Without(string name, params string[] values)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
-        parameters.Remove(new Parameter(name, value ?? string.Empty));
+        foreach (var value in values)
+        {
+            parameters.Remove(new Parameter(name, value ?? string.Empty));
+        }
+
         return this;
     }
 

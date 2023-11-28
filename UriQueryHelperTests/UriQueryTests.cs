@@ -27,26 +27,6 @@ public class UriQueryTests
     }
 
     [Test]
-    public void RemoveValueFromMultiValuedParameter()
-    {
-        var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2&param[]=value3");
-
-        target.Query = UriQuery.Parse(target.Query).Remove("param", "value2").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param[]=value1&param[]=value3"));
-    }
-
-    [Test]
-    public void RemoveQuery()
-    {
-        var target = new UriBuilder($"{BaseUri}?param=value");
-
-        target.Query = UriQuery.Parse(target.Query).Remove("param", "value").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo(BaseUri));
-    }
-
-    [Test]
     public void RemoveMultiValuedQuery()
     {
         var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2");
@@ -180,5 +160,15 @@ public class UriQueryTests
         target.Query = UriQuery.Parse(target.Query).Without("param", "value2", "value3").GetQuery();
 
         Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value1"));
+    }
+
+    [Test]
+    public void Without_RemovesQuery()
+    {
+        var target = new UriBuilder($"{BaseUri}?param=value");
+
+        target.Query = UriQuery.Parse(target.Query).Without("param").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo(BaseUri));
     }
 }

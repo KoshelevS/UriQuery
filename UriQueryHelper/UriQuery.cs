@@ -37,18 +37,6 @@ public class UriQuery
         return this;
     }
 
-    public UriQuery Remove(string name, string value)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
-        }
-
-        parameters.Remove(new Parameter(name, value ?? string.Empty));
-
-        return this;
-    }
-
     public UriQuery With(string name, params string[] values)
     {
         if (string.IsNullOrWhiteSpace(name))

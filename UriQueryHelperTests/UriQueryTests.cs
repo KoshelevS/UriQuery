@@ -113,7 +113,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void Without_RemoveValueFromMultiValuedParameter()
+    public void Without_RemovesValueFromMultiValuedParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2&param[]=value3");
 
@@ -123,7 +123,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void Without_RemoveMultipleValuesFromMultiValuedParameter()
+    public void Without_RemovesMultipleValuesFromMultiValuedParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2&param[]=value3");
 

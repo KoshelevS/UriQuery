@@ -60,7 +60,7 @@ public class UriQuery
 
         foreach (var value in values)
         {
-            parameters.Add(new Parameter(name, value));
+            parameters.Add(new Parameter(name, value ?? string.Empty));
         }
 
         return this;
@@ -75,7 +75,7 @@ public class UriQuery
 
         foreach (var value in values)
         {
-            parameters.Add(new Parameter(name, value));
+            parameters.Add(new Parameter(name, value ?? string.Empty));
         }
 
         return this;

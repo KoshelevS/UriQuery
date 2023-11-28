@@ -57,7 +57,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_AddsParameters()
+    public void With_AddsParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -67,7 +67,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_AddsParametersToEmptyQuery()
+    public void With_AddsParameterToEmptyQuery()
     {
         var target = new UriBuilder(BaseUri);
 
@@ -76,8 +76,19 @@ public class UriQueryTests
         Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
     }
 
+    [TestCase(null)]
+    [TestCase("")]
+    public void With_AddsEmptyParameter(string? value)
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
+
+        target.Query = UriQuery.Parse(target.Query).With("param2", value!).GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value1&param2="));
+    }
+
     [Test]
-    public void With_AddsMultivaluedParameters()
+    public void With_AddsMultivaluedParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -89,7 +100,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_OverridesExistingParameters()
+    public void With_OverridesExistingParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -99,7 +110,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void Append_AppendsValueToParameters()
+    public void Append_AppendsValueToParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -109,7 +120,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void Append_AddsParametersToEmptyQuery()
+    public void Append_AddsParameterToEmptyQuery()
     {
         var target = new UriBuilder(BaseUri);
 
@@ -118,8 +129,19 @@ public class UriQueryTests
         Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
     }
 
+    [TestCase(null)]
+    [TestCase("")]
+    public void Append_AppendsEmptyValueToParameter(string? value)
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
+
+        target.Query = UriQuery.Parse(target.Query).Append("param1", value!).GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1[]=value1&param1[]="));
+    }
+
     [Test]
-    public void Append_AppendsMultipleValueToParameters()
+    public void Append_AppendsMultipleValuesToParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -131,7 +153,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void Without_RemovesParameters()
+    public void Without_RemovesParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");
 

@@ -119,6 +119,16 @@ public class UriQueryTests
     }
 
     [Test]
+    public void Append_AppendsValueToParameters()
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
+
+        target.Query = UriQuery.Parse(target.Query).Append("param1", "value2").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1[]=value1&param1[]=value2"));
+    }
+
+    [Test]
     public void Without_RemovesParameters()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");

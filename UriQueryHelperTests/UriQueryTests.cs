@@ -87,7 +87,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_AddsParameter()
+    public void With_AddsParameters()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -97,7 +97,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_OverridesExistingParameter()
+    public void With_OverridesExistingParameters()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -107,7 +107,7 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_AddsMultivaluedParameter()
+    public void With_AddsMultivaluedParameters()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
 
@@ -116,5 +116,15 @@ public class UriQueryTests
         Assert.That(
             target.ToString(),
             Is.EqualTo($"{BaseUri}?param1=value1&param2[]=value21&param2[]=value22"));
+    }
+
+    [Test]
+    public void Without_RemovesParameters()
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");
+
+        target.Query = UriQuery.Parse(target.Query).Without("param1").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value2"));
     }
 }

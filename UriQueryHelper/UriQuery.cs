@@ -78,6 +78,17 @@ public class UriQuery
         return this;
     }
 
+    public UriQuery Without(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
+        }
+
+        parameters.RemoveWhere(x => x.Name == name);
+        return this;
+    }
+
     public IEnumerable<(string Name, string Value)> GetParameters()
     {
         return parameters.Select(pair => (pair.Name, pair.Value));

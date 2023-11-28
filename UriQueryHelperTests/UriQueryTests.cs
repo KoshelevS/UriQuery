@@ -161,4 +161,15 @@ public class UriQueryTests
 
         Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value2"));
     }
+
+    [Test]
+    public void Without_RemoveValueFromMultiValuedParameter()
+    {
+        var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2&param[]=value3");
+
+        target.Query = UriQuery.Parse(target.Query).Without("param", "value2").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param[]=value1&param[]=value3"));
+    }
+
 }

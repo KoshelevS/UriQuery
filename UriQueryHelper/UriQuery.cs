@@ -78,14 +78,18 @@ public class UriQuery
         return this;
     }
 
-    public UriQuery Append(string name, string value)
+    public UriQuery Append(string name, params string[] values)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
-        parameters.Add(new Parameter(name, value));
+        foreach (var value in values)
+        {
+            parameters.Add(new Parameter(name, value));
+        }
+
         return this;
     }
 

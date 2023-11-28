@@ -68,6 +68,8 @@ public class UriQuery
             throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
         }
 
+        parameters.RemoveWhere(x => x.Name == name);
+
         foreach (var value in values)
         {
             parameters.Add(new Parameter(name, value));

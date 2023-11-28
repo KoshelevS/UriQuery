@@ -97,6 +97,16 @@ public class UriQueryTests
     }
 
     [Test]
+    public void With_OverridesExistingParameter()
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
+
+        target.Query = UriQuery.Parse(target.Query).With("param1", "value2").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value2"));
+    }
+
+    [Test]
     public void With_AddsMultivaluedParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");

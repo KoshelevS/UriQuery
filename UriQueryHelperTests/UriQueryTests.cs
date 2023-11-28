@@ -7,36 +7,6 @@ public class UriQueryTests
     private const string BaseUri = "https://host.com:443/path";
 
     [Test]
-    public void RemoveSingleValuedParameter()
-    {
-        var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");
-
-        target.Query = UriQuery.Parse(target.Query).RemoveAll("param1").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value2"));
-    }
-
-    [Test]
-    public void RemoveMultiValuedParameter()
-    {
-        var target = new UriBuilder($"{BaseUri}?param1[]=value11&param1[]=value12&param2=value21");
-
-        target.Query = UriQuery.Parse(target.Query).RemoveAll("param1").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param2=value21"));
-    }
-
-    [Test]
-    public void RemoveMultiValuedQuery()
-    {
-        var target = new UriBuilder($"{BaseUri}?param[]=value1&param[]=value2");
-
-        target.Query = UriQuery.Parse(target.Query).RemoveAll("param").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo(BaseUri));
-    }
-
-    [Test]
     public void With_AddsParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");

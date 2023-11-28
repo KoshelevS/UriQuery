@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Utils.UriQueryHelper;
 
@@ -59,6 +59,16 @@ public class UriQuery
         parameters.Remove(new Parameter(name, value ?? string.Empty));
 
         return this;
+    }
+
+    public UriQuery With(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
+        }
+
+        return Add(name, value);
     }
 
     public IEnumerable<(string Name, string Value)> GetParameters()

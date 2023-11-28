@@ -19,22 +19,10 @@ public class UriQuery
         {
             var (name, value) = TryParseParameter(token) ?? throw new ArgumentException(
                 $"'{token}' is not a valid parameter expression", nameof(query));
-            result.Add(name, value);
+            result.parameters.Add(new Parameter(name, value ?? string.Empty));
         }
 
         return result;
-    }
-
-    public UriQuery Add(string name, string value)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException($"'{name}' is not a valid parameter name", nameof(name));
-        }
-
-        parameters.Add(new Parameter(name, value ?? string.Empty));
-
-        return this;
     }
 
     public UriQuery RemoveAll(string name)

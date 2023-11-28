@@ -7,36 +7,6 @@ public class UriQueryTests
     private const string BaseUri = "https://host.com:443/path";
 
     [Test]
-    public void AddQuery()
-    {
-        var target = new UriBuilder(BaseUri);
-
-        target.Query = UriQuery.Parse(target.Query).Add("param", "value").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
-    }
-
-    [Test]
-    public void AddParameter()
-    {
-        var target = new UriBuilder($"{BaseUri}?param1=value1");
-
-        target.Query = UriQuery.Parse(target.Query).Add("param2", "value2").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value1&param2=value2"));
-    }
-
-    [Test]
-    public void AddValueToParameter()
-    {
-        var target = new UriBuilder($"{BaseUri}?param1=value1");
-
-        target.Query = UriQuery.Parse(target.Query).Add("param1", "value2").GetQuery();
-
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1[]=value1&param1[]=value2"));
-    }
-
-    [Test]
     public void RemoveSingleValuedParameter()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1&param2=value2");
@@ -97,13 +67,13 @@ public class UriQueryTests
     }
 
     [Test]
-    public void With_OverridesExistingParameters()
+    public void With_AddsParametersToEmptyQuery()
     {
-        var target = new UriBuilder($"{BaseUri}?param1=value1");
+        var target = new UriBuilder(BaseUri);
 
-        target.Query = UriQuery.Parse(target.Query).With("param1", "value2").GetQuery();
+        target.Query = UriQuery.Parse(target.Query).With("param", "value").GetQuery();
 
-        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value2"));
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
     }
 
     [Test]
@@ -119,6 +89,16 @@ public class UriQueryTests
     }
 
     [Test]
+    public void With_OverridesExistingParameters()
+    {
+        var target = new UriBuilder($"{BaseUri}?param1=value1");
+
+        target.Query = UriQuery.Parse(target.Query).With("param1", "value2").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1=value2"));
+    }
+
+    [Test]
     public void Append_AppendsValueToParameters()
     {
         var target = new UriBuilder($"{BaseUri}?param1=value1");
@@ -126,6 +106,16 @@ public class UriQueryTests
         target.Query = UriQuery.Parse(target.Query).Append("param1", "value2").GetQuery();
 
         Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param1[]=value1&param1[]=value2"));
+    }
+
+    [Test]
+    public void Append_AddsParametersToEmptyQuery()
+    {
+        var target = new UriBuilder(BaseUri);
+
+        target.Query = UriQuery.Parse(target.Query).Append("param", "value").GetQuery();
+
+        Assert.That(target.ToString(), Is.EqualTo($"{BaseUri}?param=value"));
     }
 
     [Test]

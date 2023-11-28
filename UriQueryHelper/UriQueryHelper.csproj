@@ -7,14 +7,30 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Utils.UriQueryHelper</PackageId>
     <Version>1.0.0-alpha1</Version>
-    <PackageTags>uri;url;query;querystring;uribuilder;urlbuilder;parameter;queryparameter</PackageTags>
     <Description>
       Helper class that can be used to parse an URI query string, add/remove parameters
       to the query and serialize the result back to the query string.
     </Description>
     <Authors>Sergey Koshelev</Authors>
+    <Copyright>Copyright (c) Sergey Koshelev, 2023</Copyright>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackabel>true</IsPackabel>
+    <PackageId>Utils.UriQueryHelper</PackageId>
+    <PackageProjectUrl>https://github.com/KoshelevS/UriQueryHelper</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>uri;url;query;querystring;uribuilder;urlbuilder;parameter;queryparameter</PackageTags>
+
+    <RepositoryUrl>https://github.com/KoshelevS/UriQueryHelper</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath=""/>
+    <None Include="../LICENSE" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
 </Project>

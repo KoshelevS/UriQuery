@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0-rc1</Version>
+    <Version>1.0.0-rc2</Version>
     <Description>
       Helper class that can be used to parse an URI query string, add/remove parameters
       to the query and serialize the result back to the query string.

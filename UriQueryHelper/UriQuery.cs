@@ -88,11 +88,11 @@ public class UriQuery
         return parameters.Select(pair => (pair.Name, pair.Value));
     }
 
-    public string? GetQuery()
+    public string GetQuery()
     {
         if (parameters.Count == 0)
         {
-            return null;
+            return string.Empty;
         }
 
         var builder = new StringBuilder("?");
